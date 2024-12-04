@@ -58,9 +58,13 @@ function setup() {
   audio41 = createAudio('libraries/hannityaudio.mov');
   happybaby = createAudio('libraries/happybaby.mp3');
   angrybaby = createAudio('libraries/cryingbaby.mp3');
+  whitenoise = createAudio('libraries/white-noise-8117.mp3');
 
   // vid.loop();
-  vid.hide(); 
+  vid.hide();
+  vid2.hide();
+  vid3.hide();
+  vid4.hide(); 
 }
 
 function draw() {
@@ -69,7 +73,7 @@ function draw() {
   if (c == 1){
   image(vid, 0, 0, width, height); 
   audio.play();
-}
+
 if (frameCount > 230){
  image(vid2, 0, 0, width, height); 
  audio2.play();
@@ -91,14 +95,41 @@ if (frameCount > 500){
   audio2.speed(0.25);
   audio.speed(0.1);
 }
+if (frameCount > 600){
+  audio41.play();
+  audio4.speed(.5);
+  whitenoise.play();
+  whitenoise.volume(.01);
+}
+if (frameCount > 750){
+  //whitenoise.play();
+ let volume = 1;
+  for (let i = 0; i < 200; i++) {
+    audio.volume(volume);
+    audio1.volume(volume);
+    audio2.volume(volume);
+    audio21.volume(volume);
+    audio3.volume(volume);
+    audio31.volume(volume);
+    audio4.volume(volume);
+    audio41.volume(volume);
+  volume -= 0.05; 
+}
+}
+if (frameCount > 850){
+  //whitenoise.play();
+  happybaby.play();
+}
+}
 }
 
 function mousePressed() {
   c += 1; 
   if (c == 1){
+  if(frameCount > 0){
   vid.play();
   // c+=1;
-
+  }
   if (frameCount > 230){ 
     vid2.play(); 
     // c+=1;
