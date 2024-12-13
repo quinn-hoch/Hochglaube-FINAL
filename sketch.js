@@ -39,31 +39,37 @@ let timeDelay = 9000;
   //   lastTime = currentTime;
 //}
 */
+  let startTime; 
 
   let vid;
   let audio;
   let audio1;
+
   let vid2;
   let audio2;
   let audio21;
+
   let vid3;
   let audio3;
   let audio31;
+
   let vid4;
   let audio4;
   let audio41;
+
   let c = 0;
+
   let mouth;
   let eye;
-  let flashSpeed = 70;
-  let flashSpeed2 = 120;
+  let flashSpeed = 200;
+  let flashSpeed2 = 100;
   let minFlashSpeed = 10;
-  let minFlashSpeed2 = 7;
+  let minFlashSpeed2 = 5;
 
 
 function setup() {
-  createCanvas(640, 480);
-  
+  createCanvas(1280, 960);
+  //startTime = millis();
 //VIDEO INFO
   vid = createVideo('libraries/tuckercarlson.mov');
   vid.volume(0);
@@ -94,31 +100,46 @@ function setup() {
 //IMAGES
   mouth = loadImage('libraries/mouth.png');
   eye = loadImage('libraries/eyes.png');
+
+  loadPixels();
 }
 
 function draw() {
   background(0);
+  let elapsedTime = millis() - startTime;
 //videos start with click
-  if (frameCount < 1500){
+  if (elapsedTime < 24800){
   if (c == 1){
-  image(vid, 0, 0, width, height); 
+  image(vid, 0, 0, 640, 480); 
+  vid2.pause();
+  vid3.pause();
+  vid4.pause();
   audio.play();
 }
-if (c == 2){
-  image(vid2, 0, 0, width, height); 
+if (elapsedTime > 5000){
+  image(vid, 0, 0, 640, 480); 
+  vid2.play();
+  image(vid2, width/2, 0, 640, 480); 
   audio2.play();
   audio.speed(0.5);
   audio1.play();
 }
-if (c == 3){
-  image(vid3, 0, 0, width, height); 
+if (elapsedTime > 7000){
+  image(vid, 0, 0, 640, 480); 
+  image(vid2, width/2, 0, 640, 480);
+  vid3.play();
+  image(vid3, 0, height/2, 640, 480); 
   audio3.play();
   audio21.play();
   audio2.speed(0.5);
   audio.speed(0.25);
 }
-if (c == 4){
-  image(vid4, 0, 0, width, height); 
+if (elapsedTime > 15000){
+  image(vid, 0, 0, 640, 480); 
+  image(vid2, width/2, 0, 640, 480);
+  image(vid3, 0, height/2, 640, 480); 
+  vid4.play();
+  image(vid4, width/2, height/2, 640, 480); 
   audio4.play();
   audio31.play();
   audio3.speed(0.5);
@@ -127,7 +148,7 @@ if (c == 4){
 }
 //enter white noise/transition
 } 
-if (frameCount > 1400 && frameCount < 1600){
+if (elapsedTime > 22000 && elapsedTime < 26000){
 whitenoise.volume(0)
 whitenoise.play()
 for(var i = 1; i < 101; i++){
@@ -142,12 +163,13 @@ for(var i = 1; i < 101; i++){
   whitenoise.volume(i/100);
 }
 }
-if (frameCount > 1500){
+if (elapsedTime > 24800){
   whitenoise.volume(.5)
   angrybaby.play();
-  angrybaby.volume(mouseX/640);
+  //angrybaby.volume(mouseX/640); //trial/tester
 }
-if (frameCount > 1700){
+//flashing images 
+if (elapsedTime > 30000){
   imageMode(CENTER);
   flashSpeed = max(minFlashSpeed, flashSpeed - 0.05);
   if (frameCount % (flashSpeed * 2) < flashSpeed) {
@@ -159,26 +181,39 @@ if (frameCount % (flashSpeed2 * 2) < flashSpeed2) {
   image(mouth, width / 2, height / 2, mouth.width / 3, mouth.height / 3); 
 }
 }
-if (frameCount > 3300){
+if (elapsedTime > 37000){
 background(255);
 angrybaby.volume(0);
 happybaby.play();
 }
 }
 function mousePressed() {
+  startTime = millis(); 
   c += 1; 
   if (c == 1){
-  vid.play(); 
+    vid.play();
+  
+    vid2.play();
+  
+    vid3.play();
+  
+    vid4.play();   
   }
-  if (frameCount > 100){ 
+  /* if (frameCount > 100){ 
+    vid.play();
     vid2.play(); 
   }
   if (c == 3){ 
+    vid.play();
+    vid2.play();
     vid3.play(); 
   }
   if (c == 4){ 
+    vid.play();
+    vid2.play();
+    vid3.play();
     vid4.play(); 
-  }
+  } */
   // if (c == 5){ 
   //   c === 0; 
   // }
