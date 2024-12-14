@@ -66,10 +66,6 @@ let timeDelay = 9000;
   let minFlashSpeed = 10;
   let minFlashSpeed2 = 5;
 
-  let boxWidth = width/2;
-  let boxHeight = height/2;
-  //let fontSize = 1;
-
 function setup() {
   createCanvas(1280, 960);
   //startTime = millis();
@@ -113,7 +109,8 @@ function draw() {
   background(0);
   let elapsedTime = millis() - startTime;
 //videos start with click
-  if (elapsedTime < 24800){
+  if (elapsedTime < 33000){
+//video1
   if (c == 1){
   image(vid, 0, 0, 640, 480); 
   vid2.pause();
@@ -121,6 +118,7 @@ function draw() {
   vid4.pause();
   audio.play();
 }
+//video2
 if (elapsedTime > 7000){
   image(vid, 0, 0, 640, 480); 
   vid2.play();
@@ -129,79 +127,120 @@ if (elapsedTime > 7000){
   audio.speed(0.5);
   audio1.play();
 }
-if (elapsedTime > 7000){
-  vid2.play();
+if (elapsedTime > 7100){
+  image(vid, 0, 0, 640, 480); 
+  image(vid2, width/2, 0, 640, 480);
+  image(vid3, 0, height/2, 640, 480);
+  textSize(100);
+  textAlign(LEFT, TOP);
+  text('PUZZLE', 0, 0, width/2, height/2);
+  fill('white');
+}
+if (elapsedTime > 8000){
+  textSize(100);
+  textAlign(LEFT, TOP);
+  text('PUZZLE BAFFLING', 0, 0, width/2, height/2);
+  fill('white');
+}
+///video3
+if (elapsedTime > 9000){
   image(vid, 0, 0, 640, 480); 
   image(vid2, width/2, 0, 640, 480);
   vid3.play();
   image(vid3, 0, height/2, 640, 480); 
-  textSize(300);
+  textSize(100);
   textAlign(LEFT, TOP);
-  //rectMode(CORNERS);
-  text('PUZZLE', 0, 0, width/2, height/2);
+  text('PUZZLE BAFFLING', 0, 0, width/2, height/2);
+  text('FILTHY', width/2, 0, width/2, height/2);
   fill('white');
   audio3.play();
   audio21.play();
   audio2.speed(0.5);
   audio.speed(0.25);
 }
-if (elapsedTime > 8000){
-  image(vid, 0, 0, 640, 480); 
-  image(vid2, width/2, 0, 640, 480);
-  image(vid3, 0, height/2, 640, 480);
-  let fontSize = 1;
-  textSize(fontSize);
-  while (textWidth(myText) < boxWidth && fontSize < boxHeight) {
-    fontSize++;
-    textSize(fontSize);
-  } 
+if (elapsedTime > 9500){
+  textSize(100);
   textAlign(LEFT, TOP);
-  //text('PUZZLE BAFFLING', 0, 0, width/2, height/2);
-  text('PUZZLE BAFFLING', 0, 0);
+  text('PUZZLE BAFFLING', 0, 0, width/2, height/2);
+  text('FILTHY DISHONEST', width/2, 0, width/2, height/2);
   fill('white');
-
 }
-if (elapsedTime > 15000){
-  vid3.play();
+if (elapsedTime > 13000){
+  textSize(100);
+  textAlign(LEFT, TOP);
+  text('PUZZLE BAFFLING', 0, 0, width/2, height/2);
+  text('FILTHY DISHONEST BAD', width/2, 0, width/2, height/2);
+  fill('white');
+}
+//video4
+if (elapsedTime > 14000){
   image(vid, 0, 0, 640, 480); 
   image(vid2, width/2, 0, 640, 480);
   image(vid3, 0, height/2, 640, 480); 
   vid4.play();
   image(vid4, width/2, height/2, 640, 480); 
+  textAlign(LEFT, TOP);
+  text('PUZZLE BAFFLING', 0, 0, width/2, height/2);
+  text('FILTHY DISHONEST BAD BAD', width/2, 0, width/2, height/2);
+  text('ANTI VIOLENT', 0, height/2, width/2, height/2);
+  fill('white');
   audio4.play();
   audio31.play();
   audio3.speed(0.5);
   audio2.speed(0.25);
   audio.speed(0.1);
 }
-//enter white noise/transition
-} 
-if (elapsedTime > 22000 && elapsedTime < 26000){
+if (elapsedTime > 14900){
+  textAlign(LEFT, TOP);
+  text('PUZZLE BAFFLING', 0, 0, width/2, height/2);
+  text('FILTHY DISHONEST BAD BAD', width/2, 0, width/2, height/2);
+  text('ANTI VIOLENT PROTEST', 0, height/2, width/2, height/2);
+  fill('white');
+}
+if (elapsedTime > 18000){
+  image(vid, 0, 0, 640, 480); 
+  image(vid2, width/2, 0, 640, 480);
+  image(vid3, 0, height/2, 640, 480); 
+  image(vid4, width/2, height/2, 640, 480); 
+  textAlign(LEFT, TOP);
+  textSize(80);
+  text('PUZZLE BAFFLING WHITE PEOPLE BAD SYSTEMIC RACISM', 0, 0, width/2, height/2);
+  textSize(100);
+  text('FILTHY DISHONEST BAD BAD BAD', width/2, 0, width/2, height/2);
+  textSize(97);
+  text('ANTI VIOLENT PROTEST PROTECTING', 0, height/2, width/2, height/2);
+  fill('white');
+}
+if (elapsedTime > 29000){
+  textSize(100);
+  text('UNGRATEFUL', width/2, height/2, width/2, height/2);
+  fill(255);
+}
+} //enter white noise/transition
+if (elapsedTime > 30000 && elapsedTime < 34000){
 whitenoise.volume(0)
 whitenoise.play()
 for(var i = 1; i < 101; i++){
   audio.volume((100 - i)/100);
-  audio1.volume((100 - i)/100);;
-  audio2.volume((100 - i)/100);;
-  audio21.volume((100 - i)/100);;
-  audio3.volume((100 - i)/100);;
-  audio31.volume((100 - i)/100);;
-  audio4.volume((100 - i)/100);;
-  audio41.volume((100 - i)/100);;
+  audio1.volume((100 - i)/100);
+  audio2.volume((100 - i)/100);
+  audio21.volume((100 - i)/100);
+  audio3.volume((100 - i)/100);
+  audio31.volume((100 - i)/100);
+  audio4.volume((100 - i)/100);
+  audio41.volume((100 - i)/100);
   whitenoise.volume(i/100);
 }
 }
-if (elapsedTime > 24800){
+if (elapsedTime > 30800){
   whitenoise.volume(.5)
   angrybaby.play();
-  //angrybaby.volume(mouseX/640); //trial/tester
 }
 //flashing images 
-if (elapsedTime > 30000){
+if (elapsedTime > 38000){
   imageMode(CENTER);
   flashSpeed = max(minFlashSpeed, flashSpeed - 0.05);
-  if (frameCount % (flashSpeed * 2) < flashSpeed) {
-  //image(eye, width / 2 - eye.width / 2, height / 2 - eye.height / 2); 
+  if (frameCount % (flashSpeed * 2) < flashSpeed) { 
   image(eye, width / 2, height / 2, eye.width / 3, eye.height / 3); 
 }
   flashSpeed2 = max(minFlashSpeed2, flashSpeed2 - 0.05);
@@ -209,7 +248,7 @@ if (frameCount % (flashSpeed2 * 2) < flashSpeed2) {
   image(mouth, width / 2, height / 2, mouth.width / 3, mouth.height / 3); 
 }
 }
-if (elapsedTime > 37000){
+if (elapsedTime > 45000){
 background(255);
 angrybaby.volume(0);
 happybaby.play();
@@ -220,29 +259,8 @@ function mousePressed() {
   c += 1; 
   if (c == 1){
     vid.play();
-  
     vid2.play();
-  
     vid3.play();
-  
     vid4.play();   
   }
-  /* if (frameCount > 100){ 
-    vid.play();
-    vid2.play(); 
-  }
-  if (c == 3){ 
-    vid.play();
-    vid2.play();
-    vid3.play(); 
-  }
-  if (c == 4){ 
-    vid.play();
-    vid2.play();
-    vid3.play();
-    vid4.play(); 
-  } */
-  // if (c == 5){ 
-  //   c === 0; 
-  // }
 }
