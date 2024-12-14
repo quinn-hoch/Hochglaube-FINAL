@@ -66,6 +66,9 @@ let timeDelay = 9000;
   let minFlashSpeed = 10;
   let minFlashSpeed2 = 5;
 
+  let boxWidth = width/2;
+  let boxHeight = height/2;
+  //let fontSize = 1;
 
 function setup() {
   createCanvas(1280, 960);
@@ -101,7 +104,9 @@ function setup() {
   mouth = loadImage('libraries/mouth.png');
   eye = loadImage('libraries/eyes.png');
 
-  loadPixels();
+  //loadPixels();
+  //let fontSize = 1;
+
 }
 
 function draw() {
@@ -116,7 +121,7 @@ function draw() {
   vid4.pause();
   audio.play();
 }
-if (elapsedTime > 5000){
+if (elapsedTime > 7000){
   image(vid, 0, 0, 640, 480); 
   vid2.play();
   image(vid2, width/2, 0, 640, 480); 
@@ -125,16 +130,39 @@ if (elapsedTime > 5000){
   audio1.play();
 }
 if (elapsedTime > 7000){
+  vid2.play();
   image(vid, 0, 0, 640, 480); 
   image(vid2, width/2, 0, 640, 480);
   vid3.play();
   image(vid3, 0, height/2, 640, 480); 
+  textSize(300);
+  textAlign(LEFT, TOP);
+  //rectMode(CORNERS);
+  text('PUZZLE', 0, 0, width/2, height/2);
+  fill('white');
   audio3.play();
   audio21.play();
   audio2.speed(0.5);
   audio.speed(0.25);
 }
+if (elapsedTime > 8000){
+  image(vid, 0, 0, 640, 480); 
+  image(vid2, width/2, 0, 640, 480);
+  image(vid3, 0, height/2, 640, 480);
+  let fontSize = 1;
+  textSize(fontSize);
+  while (textWidth(myText) < boxWidth && fontSize < boxHeight) {
+    fontSize++;
+    textSize(fontSize);
+  } 
+  textAlign(LEFT, TOP);
+  //text('PUZZLE BAFFLING', 0, 0, width/2, height/2);
+  text('PUZZLE BAFFLING', 0, 0);
+  fill('white');
+
+}
 if (elapsedTime > 15000){
+  vid3.play();
   image(vid, 0, 0, 640, 480); 
   image(vid2, width/2, 0, 640, 480);
   image(vid3, 0, height/2, 640, 480); 
