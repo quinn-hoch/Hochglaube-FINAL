@@ -78,6 +78,7 @@ let timeDelay = 9000;
   let flag;
   let objects = []; 
   let gameOver = false;
+  let burning;
 
 function setup() {
   createCanvas(windowWidth, windowHeight); 
@@ -116,6 +117,7 @@ function setup() {
 //GAME
 player = new Player();
 flag = loadImage('libraries/flag.svg.png')
+burning = loadImage('libraries/burningflag.jpg')
 }
 
 function draw() {
@@ -261,12 +263,26 @@ if (elapsedTime > 33000){
   audio31.pause();
   audio4.pause();
   audio41.pause();
+  textSize(100);
+  textAlign(CENTER, CENTER);
+  text("Save democracy from", width/2, (height/2 - 101));
+  text("falling buzz words!", width/2, height/2);
+  textSize(50);
+  text("use your arrow keys to move side", width/2, (height/2 + 100));
+  text("to side and avoid falling words", width/2, (height/2 + 151));
 
+  fill(255);
+  player.update();  
+  player.display();
+}
+if (elapsedTime > 39000){
+  background(0);
   if (gameOver) {
-    textSize(32);
+    textSize(100);
     textAlign(CENTER, CENTER);
     fill(0);
-    text("Game Over!", width / 2, height / 2);
+    image(burning, 0, 0, width, height);
+    text("YOU KILLED DEMOCRACY!", width/2, height/2);
     return;  
   }
   player.update();  
@@ -278,9 +294,8 @@ if (elapsedTime > 33000){
     objects[i].update();
     objects[i].display();
     
-    // Check for collision with the player
     if (objects[i].hits(player)) {
-      gameOver = true;  // End the game if there's a collision
+      gameOver = true; 
     }
     if (objects[i].offScreen()) {
       objects.splice(i, 1);
@@ -318,7 +333,7 @@ function mousePressed() {
 }
 class Player {
   constructor() {
-    this.width = 50;
+    this.width = 60;
     this.height = 50;
     this.x = width / 2 - this.width / 2;
     this.y = height - this.height - 10;
@@ -343,7 +358,7 @@ class FallingObject {
   constructor() {
     this.size = random(20, 50); 
     this.x = random(width);  
-    this.y = -this.size;  
+    this.y = 0;  //- this.size
     this.speed = random(2, 5); 
   }
 
