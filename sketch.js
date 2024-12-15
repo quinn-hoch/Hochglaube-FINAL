@@ -39,8 +39,11 @@ let timeDelay = 9000;
   //   lastTime = currentTime;
 //}
 */
+
+//CODE STARTS HERE
   let startTime; 
 
+//videos segment
   let vid;
   let audio;
   let audio1;
@@ -59,16 +62,26 @@ let timeDelay = 9000;
 
   let c = 0;
 
+//flashing images segment
   let mouth;
   let eye;
+  let happybaby
+  let angrybaby;
+  let whitenoise;
   let flashSpeed = 200;
   let flashSpeed2 = 100;
   let minFlashSpeed = 10;
   let minFlashSpeed2 = 5;
 
+//game segment
+  let player;
+  let flag;
+  let objects = []; 
+  let gameOver = false;
+
 function setup() {
-  createCanvas(1280, 960);
-  //startTime = millis();
+  createCanvas(windowWidth, windowHeight); 
+  
 //VIDEO INFO
   vid = createVideo('libraries/tuckercarlson.mov');
   vid.volume(0);
@@ -100,9 +113,9 @@ function setup() {
   mouth = loadImage('libraries/mouth.png');
   eye = loadImage('libraries/eyes.png');
 
-  //loadPixels();
-  //let fontSize = 1;
-
+//GAME
+player = new Player();
+flag = loadImage('libraries/flag.svg.png')
 }
 
 function draw() {
@@ -112,7 +125,7 @@ function draw() {
   if (elapsedTime < 33000){
 //video1
   if (c == 1){
-  image(vid, 0, 0, 640, 480); 
+  image(vid, 0, 0, width/2, height/2); 
   vid2.pause();
   vid3.pause();
   vid4.pause();
@@ -120,17 +133,17 @@ function draw() {
 }
 //video2
 if (elapsedTime > 7000){
-  image(vid, 0, 0, 640, 480); 
+  image(vid, 0, 0, width/2, height/2); 
   vid2.play();
-  image(vid2, width/2, 0, 640, 480); 
+  image(vid2, width/2, 0, width/2, height/2); 
   audio2.play();
   audio.speed(0.5);
   audio1.play();
 }
 if (elapsedTime > 7100){
-  image(vid, 0, 0, 640, 480); 
-  image(vid2, width/2, 0, 640, 480);
-  image(vid3, 0, height/2, 640, 480);
+  image(vid, 0, 0,  width/2, height/2); 
+  image(vid2, width/2, 0,  width/2, height/2);
+  image(vid3, 0, height/2,  width/2, height/2);
   textSize(100);
   textAlign(LEFT, TOP);
   text('PUZZLE', 0, 0, width/2, height/2);
@@ -144,10 +157,10 @@ if (elapsedTime > 8000){
 }
 ///video3
 if (elapsedTime > 9000){
-  image(vid, 0, 0, 640, 480); 
-  image(vid2, width/2, 0, 640, 480);
+  image(vid, 0, 0,  width/2, height/2); 
+  image(vid2, width/2, 0, width/2, height/2);
   vid3.play();
-  image(vid3, 0, height/2, 640, 480); 
+  image(vid3, 0, height/2,  width/2, height/2); 
   textSize(100);
   textAlign(LEFT, TOP);
   text('PUZZLE BAFFLING', 0, 0, width/2, height/2);
@@ -174,11 +187,11 @@ if (elapsedTime > 13000){
 }
 //video4
 if (elapsedTime > 14000){
-  image(vid, 0, 0, 640, 480); 
-  image(vid2, width/2, 0, 640, 480);
-  image(vid3, 0, height/2, 640, 480); 
+  image(vid, 0, 0,  width/2, height/2); 
+  image(vid2, width/2, 0, width/2, height/2);
+  image(vid3, 0, height/2,  width/2, height/2); 
   vid4.play();
-  image(vid4, width/2, height/2, 640, 480); 
+  image(vid4, width/2, height/2,  width/2, height/2); 
   textAlign(LEFT, TOP);
   text('PUZZLE BAFFLING', 0, 0, width/2, height/2);
   text('FILTHY DISHONEST BAD BAD', width/2, 0, width/2, height/2);
@@ -198,10 +211,10 @@ if (elapsedTime > 14900){
   fill('white');
 }
 if (elapsedTime > 18000){
-  image(vid, 0, 0, 640, 480); 
-  image(vid2, width/2, 0, 640, 480);
-  image(vid3, 0, height/2, 640, 480); 
-  image(vid4, width/2, height/2, 640, 480); 
+  image(vid, 0, 0, width/2, height/2); 
+  image(vid2, width/2, 0, width/2, height/2);
+  image(vid3, 0, height/2,  width/2, height/2); 
+  image(vid4, width/2, height/2, width/2, height/2); 
   textAlign(LEFT, TOP);
   textSize(80);
   text('PUZZLE BAFFLING WHITE PEOPLE BAD SYSTEMIC RACISM', 0, 0, width/2, height/2);
@@ -236,6 +249,45 @@ if (elapsedTime > 30800){
   whitenoise.volume(.5)
   angrybaby.play();
 }
+//game
+if (elapsedTime > 33000){
+  whitenoise.pause();
+  angrybaby.pause();
+  audio.pause();
+  audio1.pause();
+  audio2.pause();
+  audio21.pause();
+  audio3.pause();
+  audio31.pause();
+  audio4.pause();
+  audio41.pause();
+
+  if (gameOver) {
+    textSize(32);
+    textAlign(CENTER, CENTER);
+    fill(0);
+    text("Game Over!", width / 2, height / 2);
+    return;  
+  }
+  player.update();  
+  player.display();
+  if (frameCount % 60 == 0) {
+    objects.push(new FallingObject());
+  }
+  for (let i = objects.length - 1; i >= 0; i--) {
+    objects[i].update();
+    objects[i].display();
+    
+    // Check for collision with the player
+    if (objects[i].hits(player)) {
+      gameOver = true;  // End the game if there's a collision
+    }
+    if (objects[i].offScreen()) {
+      objects.splice(i, 1);
+}
+}
+}
+/*
 //flashing images 
 if (elapsedTime > 38000){
   imageMode(CENTER);
@@ -252,7 +304,7 @@ if (elapsedTime > 45000){
 background(255);
 angrybaby.volume(0);
 happybaby.play();
-}
+} */
 }
 function mousePressed() {
   startTime = millis(); 
@@ -262,5 +314,54 @@ function mousePressed() {
     vid2.play();
     vid3.play();
     vid4.play();   
+  }
+}
+class Player {
+  constructor() {
+    this.width = 50;
+    this.height = 50;
+    this.x = width / 2 - this.width / 2;
+    this.y = height - this.height - 10;
+    this.speed = 5;
+  }
+
+  update() {
+    if (keyIsDown(LEFT_ARROW)) {
+      this.x -= this.speed;
+    }
+    if (keyIsDown(RIGHT_ARROW)) {
+      this.x += this.speed;
+    }
+    this.x = constrain(this.x, 0, width - this.width);
+  }
+
+  display() {
+    image(flag, this.x, this.y, this.width, this.height);
+  }
+}
+class FallingObject {
+  constructor() {
+    this.size = random(20, 50); 
+    this.x = random(width);  
+    this.y = -this.size;  
+    this.speed = random(2, 5); 
+  }
+
+  update() {
+    this.y += this.speed;  
+  }
+
+  display() {
+    fill(255, 0, 0);
+    ellipse(this.x, this.y, this.size, this.size); 
+  }
+
+  hits(player) {
+    let d = dist(this.x, this.y, player.x + player.width / 2, player.y + player.height / 2);
+    return d < (this.size / 2 + player.width / 2); 
+  }
+
+  offScreen() {
+    return this.y > height + this.size;
   }
 }
