@@ -79,6 +79,7 @@ let timeDelay = 9000;
   let objects = []; 
   let gameOver = false;
   let burning;
+  let words = ["puzzling", "ungrateful", "violent", "anti-violent", "protest", "dishonest", "baffling", "bad", "free choice", "slick", "donor class", "systemic", "racism", "filthy", "corrupt", "enemy", "protect", "uninformed", "trust", "corruption", "power", "white", "winning", "loser", "media"]
 
 function setup() {
   createCanvas(windowWidth, windowHeight); 
@@ -302,25 +303,9 @@ if (elapsedTime > 39000){
 }
 }
 }
-/*
-//flashing images 
-if (elapsedTime > 38000){
-  imageMode(CENTER);
-  flashSpeed = max(minFlashSpeed, flashSpeed - 0.05);
-  if (frameCount % (flashSpeed * 2) < flashSpeed) { 
-  image(eye, width / 2, height / 2, eye.width / 3, eye.height / 3); 
 }
-  flashSpeed2 = max(minFlashSpeed2, flashSpeed2 - 0.05);
-if (frameCount % (flashSpeed2 * 2) < flashSpeed2) {
-  image(mouth, width / 2, height / 2, mouth.width / 3, mouth.height / 3); 
-}
-}
-if (elapsedTime > 45000){
-background(255);
-angrybaby.volume(0);
-happybaby.play();
-} */
-}
+
+//Start the sketch
 function mousePressed() {
   startTime = millis(); 
   c += 1; 
@@ -331,6 +316,7 @@ function mousePressed() {
     vid4.play();   
   }
 }
+
 class Player {
   constructor() {
     this.width = 60;
@@ -354,11 +340,13 @@ class Player {
     image(flag, this.x, this.y, this.width, this.height);
   }
 }
+
 class FallingObject {
   constructor() {
-    this.size = random(20, 50); 
+    this.word = random(words); 
+    this.size = 15;  
     this.x = random(width);  
-    this.y = 0;  //- this.size
+    this.y = 0; 
     this.speed = random(2, 5); 
   }
 
@@ -368,12 +356,14 @@ class FallingObject {
 
   display() {
     fill(255, 0, 0);
-    ellipse(this.x, this.y, this.size, this.size); 
+    textAlign(CENTER, CENTER); 
+    text(this.word, this.x, this.y); 
   }
 
   hits(player) {
-    let d = dist(this.x, this.y, player.x + player.width / 2, player.y + player.height / 2);
-    return d < (this.size / 2 + player.width / 2); 
+    let wordWidth = textWidth(this.word);
+    let wordHeight = this.size;
+    return (this.x + wordWidth / 2 > player.x && this.x - wordWidth / 2 < player.x + player.width && this.y + wordHeight / 2 > player.y && this.y - wordHeight / 2 < player.y + player.height);
   }
 
   offScreen() {
