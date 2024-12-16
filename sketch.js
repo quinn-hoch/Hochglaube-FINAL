@@ -1,49 +1,9 @@
 //HOCHGLAUBE FINAL
-/*pseudo code: 
-1. start with vid 1 
-  trigger word 
-  > video slows down
-  > image opacity changes/more pixelated
-  > vid 2 starts playing over original*
-  > every trigger word further alters the original video
-2. vid 2 starts playing
-  trigger word 
-  > video slows down
-  > image opacity changes/more pixelated
-  > vid 3 starts playing over originals*
-  > every trigger word further alters the original video
-3. repeat above process with 3-7 videos 
-4. white noise/steady beep plays in
-5. screen goes black
-  > no sound for a few seconds
-6. sound of baby crying 
-  > changes in volume depending on mouse position
-7. flash image of eye behind wine glass
-8. back to black screen/baby more intensely crying (1)?
-7. flash image of screaming mouth
-8. back to black screen/baby more intensely crying (2)?
-9. images flash more rapidly
-  > progressively
-  > black/eye/black/mouth/ repeated
-10. when images are no longer recognizable background suddenly flashes white
-  > happy baby noises
 
-Further notes:
-let lastTime;
-let timeDelay = 9000; 
-
-  lastTime = millis();
-  // vid.loop();
-
-  // if (currentTime - lastTime > timeDelay) {
-  //   lastTime = currentTime;
-//}
-*/
-
-//CODE STARTS HERE
+//variables//
   let startTime; 
 
-//videos segment
+//VIDEOS SEGMENT
   let vid;
   let audio;
   let audio1;
@@ -62,18 +22,7 @@ let timeDelay = 9000;
 
   let c = 0;
 
-//flashing images segment
-  let mouth;
-  let eye;
-  let happybaby
-  let angrybaby;
-  let whitenoise;
-  let flashSpeed = 200;
-  let flashSpeed2 = 100;
-  let minFlashSpeed = 10;
-  let minFlashSpeed2 = 5;
-
-//game segment
+//GAME SEGMENT
   let player;
   let flag;
   let objects = []; 
@@ -126,9 +75,11 @@ burning = loadImage('libraries/burningflag.jpg')
 function draw() {
   background(0);
   let elapsedTime = millis() - startTime;
+
 //videos start with click
   if (elapsedTime < 33000){
-//video1
+
+//VIDEO 1 PLAYS
   if (c == 1){
   image(vid, 0, 0, width/2, height/2); 
   vid2.pause();
@@ -136,7 +87,7 @@ function draw() {
   vid4.pause();
   audio.play();
 }
-//video2
+//VIDEO 2 PLAYS
 if (elapsedTime > 7000){
   image(vid, 0, 0, width/2, height/2); 
   vid2.play();
@@ -160,7 +111,7 @@ if (elapsedTime > 8000){
   text('PUZZLE BAFFLING', 0, 0, width/2, height/2);
   fill('white');
 }
-///video3
+///VIDEO 3 PLAYS
 if (elapsedTime > 9000){
   image(vid, 0, 0,  width/2, height/2); 
   image(vid2, width/2, 0, width/2, height/2);
@@ -190,7 +141,7 @@ if (elapsedTime > 13000){
   text('FILTHY DISHONEST BAD', width/2, 0, width/2, height/2);
   fill('white');
 }
-//video4
+//VIDEO 4 PLAYS
 if (elapsedTime > 14000){
   image(vid, 0, 0,  width/2, height/2); 
   image(vid2, width/2, 0, width/2, height/2);
@@ -235,7 +186,9 @@ if (elapsedTime > 29000){
   fill(255);
 }
 } 
-//enter white noise/transition
+
+//enter white noise/baby/transition
+
 if (elapsedTime > 30000 && elapsedTime < 34000){
 whitenoise.volume(0)
 whitenoise.play()
@@ -255,7 +208,8 @@ if (elapsedTime > 30800){
   whitenoise.volume(.5)
   angrybaby.play();
 }
-//game
+
+//GAME INSTRUCTIONS
 if (elapsedTime > 33000){
   whitenoise.pause();
   angrybaby.pause();
@@ -270,17 +224,24 @@ if (elapsedTime > 33000){
   textSize(100);
   textAlign(CENTER, CENTER);
   text("Save democracy ", width/2, (height/2 - 101));
-  text("from buzz words!", width/2, height/2);
+  text("from the buzz words!", width/2, height/2);
   textSize(50);
   text("use your arrow keys to move side", width/2, (height/2 + 100));
-  text("to side and avoid falling buzz words", width/2, (height/2 + 151));
-  text("while collecting neutral words", width/2, (height/2 + 202));
+  text("to side and collect", (width/2 - (textWidth("words")/2)), (height/2 + 151));
+  fill(255, 0, 0);
+  text("buzz", (width/2 + (textWidth("to side and collect ")/2)), (height/2 + 151));
+  fill(255);
+  //text("words", (width/2 + (textWidth("to side and collect buzz ")/2)), (height/2 + 151));
+  text("words while avoiding neutral", width/2, (height/2 + 202));
+  fill(0, 255, 0);
+  text("neutral", (width/2 + (textWidth("words while avoiding ")/2)), (height/2 + 202));
 
   fill(255);
   player.update();  
   player.display();
 }
-if (elapsedTime > 39000){
+//GAME PLAY
+if (elapsedTime > 41500){
   background(0);
   textAlign(LEFT);
   textSize(20); 
@@ -310,6 +271,9 @@ if (elapsedTime > 39000){
       }
       objects.splice(i, 1); 
     }
+    if (objects[i].isGood && objects[i].offScreen()) {
+      gameOver = true;  
+    }
     if (objects[i].offScreen()) {
       objects.splice(i, 1);
 }
@@ -317,7 +281,7 @@ if (elapsedTime > 39000){
 }
 }
 
-//Start the sketch
+//Starts/triggers the sketch
 function mousePressed() {
   startTime = millis(); 
   c += 1; 
@@ -359,7 +323,7 @@ class FallingObject {
     this.x = random(width);  
     this.y = 0; 
     this.speed = random(2, 5); 
-    this.isGood = random() > 0.5;
+    this.isGood = random() > 0.75;
     if (this.isGood) {
       this.word = random(goodWords);  
     } else {
