@@ -79,7 +79,9 @@ let timeDelay = 9000;
   let objects = []; 
   let gameOver = false;
   let burning;
-  let words = ["puzzling", "ungrateful", "violent", "anti-violent", "protest", "dishonest", "baffling", "bad", "free choice", "slick", "donor class", "systemic", "racism", "filthy", "corrupt", "enemy", "protect", "uninformed", "trust", "corruption", "power", "white", "winning", "loser", "media"]
+  let goodWords = ["puzzling", "ungrateful", "violent", "anti-violent", "protest", "dishonest", "baffling", "bad", "free choice", "slick", "donor class", "systemic", "racism", "filthy", "corrupt", "enemy", "protect", "uninformed", "trust", "corruption", "power", "white", "winning", "loser", "media"]
+  let badWords = ["the", "today", "questions", "big", "tomorrow", "that", "not", "of", "expect", "was", "is", "will", "weather", "still", "senator", "one", "you", "for", "to", "measure", "are", "so", "level", "look", "tonight", "have", "about", "community", "summer", "night", "morning", "something", "like", "in", "on"]
+  let score = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight); 
@@ -232,7 +234,8 @@ if (elapsedTime > 29000){
   text('UNGRATEFUL', width/2, height/2, width/2, height/2);
   fill(255);
 }
-} //enter white noise/transition
+} 
+//enter white noise/transition
 if (elapsedTime > 30000 && elapsedTime < 34000){
 whitenoise.volume(0)
 whitenoise.play()
@@ -266,11 +269,12 @@ if (elapsedTime > 33000){
   audio41.pause();
   textSize(100);
   textAlign(CENTER, CENTER);
-  text("Save democracy from", width/2, (height/2 - 101));
-  text("falling buzz words!", width/2, height/2);
+  text("Save democracy ", width/2, (height/2 - 101));
+  text("from buzz words!", width/2, height/2);
   textSize(50);
   text("use your arrow keys to move side", width/2, (height/2 + 100));
-  text("to side and avoid falling words", width/2, (height/2 + 151));
+  text("to side and avoid falling buzz words", width/2, (height/2 + 151));
+  text("while collecting neutral words", width/2, (height/2 + 202));
 
   fill(255);
   player.update();  
@@ -278,6 +282,9 @@ if (elapsedTime > 33000){
 }
 if (elapsedTime > 39000){
   background(0);
+  textAlign(LEFT);
+  textSize(20); 
+  text("Score: " + score, 10, 10);
   if (gameOver) {
     textSize(100);
     textAlign(CENTER, CENTER);
@@ -296,7 +303,12 @@ if (elapsedTime > 39000){
     objects[i].display();
     
     if (objects[i].hits(player)) {
-      gameOver = true; 
+      if (objects[i].isGood) {
+        score += 1;  
+      } else {
+        gameOver = true;  
+      }
+      objects.splice(i, 1); 
     }
     if (objects[i].offScreen()) {
       objects.splice(i, 1);
@@ -343,11 +355,16 @@ class Player {
 
 class FallingObject {
   constructor() {
-    this.word = random(words); 
     this.size = 15;  
     this.x = random(width);  
     this.y = 0; 
     this.speed = random(2, 5); 
+    this.isGood = random() > 0.5;
+    if (this.isGood) {
+      this.word = random(goodWords);  
+    } else {
+      this.word = random(badWords);  
+    } 
   }
 
   update() {
@@ -355,9 +372,14 @@ class FallingObject {
   }
 
   display() {
-    fill(255, 0, 0);
+    textSize(this.size);  
     textAlign(CENTER, CENTER); 
-    text(this.word, this.x, this.y); 
+    if (this.isGood) {
+      fill(255, 0, 0);  
+    } else {
+      fill(0, 255, 0); 
+    }
+    text(this.word, this.x, this.y);
   }
 
   hits(player) {
